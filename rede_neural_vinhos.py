@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 from sklearn.discriminant_analysis import StandardScaler
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from keras.models import Sequential
@@ -23,7 +24,7 @@ scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 # Divisão dos dados em treino e teste
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
 # Definição do modelo
 model = Sequential()
@@ -38,6 +39,14 @@ model.compile(optimizer=SGD(0.01), loss="binary_crossentropy", metrics=["accurac
 H = model.fit(X_train, y_train, epochs=100, batch_size=16, validation_data=(X_test, y_test))
 
 loss, accuracy = model.evaluate(X_test, y_test)
+
+# avaliar a Rede Neural
+print("[INFO] avaliando a rede neural...")
+
+predictions = model.predict(X_test, batch_size=1)
+predictions = (predictions > 0.5).astype(int).flatten()
+
+print(classification_report(y_test, predictions))
 
 print(f'Acurácia: {accuracy:.2f}')
 

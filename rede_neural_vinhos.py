@@ -70,7 +70,7 @@ print("[INFO] avaliando a rede neural...")
 predictions = model.predict(X_test, batch_size=1)
 predictions = (predictions > 0.5).astype(int).flatten()
 
-print(classification_report(y_test, predictions))
+print(classification_report(y_test, predictions, digits=6))
 
 print(f'Acurácia: {accuracy:.6f}')
 

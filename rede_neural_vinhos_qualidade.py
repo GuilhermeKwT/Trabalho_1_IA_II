@@ -49,11 +49,11 @@ y_test = lb.transform(y_test)
 # Definição do modelo
 model = Sequential()
 model.add(Dense(11, input_dim=X.shape[1], activation='relu'))
-model.add(Dense(11, activation='relu'))
+model.add(Dense(8, activation='relu'))
 model.add(Dense(7, activation='softmax'))
 
 # Compilação do modelo
-model.compile(optimizer=SGD(0.01), loss="categorical_crossentropy", metrics=["accuracy"])
+model.compile(optimizer=SGD(0.005), loss="categorical_crossentropy", metrics=["accuracy"])
 
 # Treinamento do modelo
 metrics_callback = MetricsCallback(validation_data=(X_test, y_test))
@@ -72,7 +72,7 @@ predictions = model.predict(X_test)
 pred_classes = predictions.argmax(axis=1)
 true_classes = y_test.argmax(axis=1)
 
-print(classification_report(true_classes, pred_classes))
+print(classification_report(true_classes, pred_classes, digits=6))
 
 print(f'Acurácia: {accuracy:.6f}')
 

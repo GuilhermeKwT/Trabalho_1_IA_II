@@ -53,12 +53,12 @@ model.add(Dense(8, activation='relu'))
 model.add(Dense(7, activation='softmax'))
 
 # Compilação do modelo
-model.compile(optimizer=SGD(0.005), loss="categorical_crossentropy", metrics=["accuracy"])
+model.compile(optimizer=SGD(0.01), loss="categorical_crossentropy", metrics=["accuracy"])
 
 # Treinamento do modelo
 metrics_callback = MetricsCallback(validation_data=(X_test, y_test))
 H = model.fit(X_train, y_train,
-    epochs=300,
+    epochs=150,
     batch_size=16,
     validation_data=(X_test, y_test),
     callbacks=[metrics_callback])
@@ -77,7 +77,7 @@ print(classification_report(true_classes, pred_classes, digits=6))
 print(f'Acurácia: {accuracy:.6f}')
 
 results_df = pd.DataFrame({
-    'epoch': np.arange(1, 301),
+    'epoch': np.arange(1, 151),
     'val_precision': metrics_callback.precisions,
     'val_f1': metrics_callback.f1s
 })
@@ -85,10 +85,10 @@ print(results_df)
 
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0,300), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0,300), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0,300), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0,300), H.history["val_accuracy"], label="val_acc")
+plt.plot(np.arange(0,150), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0,150), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0,150), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0,150), H.history["val_accuracy"], label="val_acc")
 plt.title("Training Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
